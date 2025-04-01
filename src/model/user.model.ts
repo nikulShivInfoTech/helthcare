@@ -11,7 +11,6 @@ import {
 } from 'sequelize-typescript';
 import { HealthModel } from './health.model';
 
-// Enum imports
 import { CommonDiseases, Lifestyle } from 'src/libs/utility/constants/enums';
 
 @Table({ tableName: 'users' })
