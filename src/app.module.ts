@@ -9,6 +9,7 @@ import { HealthModule } from './health/health.module';
 import * as dotenv from 'dotenv';
 import { UserModel } from './model/user.model';
 import { HealthModel } from './model/health.model';
+import { UserModule } from './users/users.module';
 
 dotenv.config();
 @Module({
@@ -25,12 +26,12 @@ dotenv.config();
       synchronize: true,
     }),
     ConfigModule.forRoot({ isGlobal: true }),
-
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
 
     HealthModule,
+    UserModule,
   ],
 
   controllers: [AppController],
