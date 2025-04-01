@@ -6,6 +6,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import * as dotenv from 'dotenv';
+import { UserModel } from './model/user.model';
+import { UserModule } from './users/users.module';
 
 dotenv.config();
 @Module({
@@ -17,15 +19,15 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      models: [],
+      models: [UserModel],
       autoLoadModels: true,
       synchronize: true,
     }),
     ConfigModule.forRoot({ isGlobal: true }),
-
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
+    UserModule,
   ],
 
   controllers: [AppController],
