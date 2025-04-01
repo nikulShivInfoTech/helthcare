@@ -53,4 +53,26 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEnum(CommonDiseases)
   existing_diseases?: CommonDiseases;
+
+  @ApiProperty({
+    example: 12,
+    description:
+      'Notification time in hours (e.g., 12h, 24h, or any custom hour)',
+  })
+  @IsOptional()
+  @IsNumber()
+  notification_time: number;
+
+  @ApiProperty({
+    example: 3,
+    description: 'Daily water intake requirement in liters',
+  })
+  @IsOptional()
+  @IsNumber()
+  water_intake: number;
+
+  @ApiProperty({ example: 2800, description: 'Calories intake in day' })
+  @IsOptional()
+  @IsNumber()
+  calories_intake: number;
 }

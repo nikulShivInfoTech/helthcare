@@ -93,4 +93,12 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsNumber()
   notification_time: number;
+
+  @ApiProperty({
+    example: 3,
+    description: 'Daily water intake requirement in liters',
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  water_intake: number;
 }

@@ -53,6 +53,10 @@ export class UserModel extends Model<UserModel> {
   @Column
   notification_time: number;
 
+  @AllowNull(false)
+  @Column
+  water_intake: number;
+
   @AllowNull(true)
   @Column({ type: DataType.ENUM(...Object.values(Lifestyle)) })
   lifestyle: Lifestyle;
