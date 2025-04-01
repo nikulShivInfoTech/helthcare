@@ -36,12 +36,15 @@ export class HealthService {
 
   async getDailySummary(req: any, getHealthSummaryDto: GetHealthSummaryDto) {
     const userId = req.user.id;
+
     const summaryOfDailyIntakes = await this.healthModel.findAll({
       where: {
         userId,
         date: getHealthSummaryDto.date,
+        status: false,
       },
     });
+
     Logger.log(`Daily intakes ${Messages.RETRIEVED_SUCCESS}`);
     return GeneralResponse(
       HttpStatus.OK,
