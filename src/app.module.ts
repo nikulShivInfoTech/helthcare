@@ -5,7 +5,10 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
+import { HealthModule } from './health/health.module';
 import * as dotenv from 'dotenv';
+import { UserModel } from './model/user.model';
+import { HealthModel } from './model/health.model';
 
 dotenv.config();
 @Module({
@@ -17,7 +20,7 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      models: [],
+      models: [UserModel, HealthModel],
       autoLoadModels: true,
       synchronize: true,
     }),
@@ -26,6 +29,8 @@ dotenv.config();
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
+
+    HealthModule,
   ],
 
   controllers: [AppController],
