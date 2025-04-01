@@ -6,6 +6,7 @@ import { GetHealthSummaryDto } from './dto/get-health-summary.dto';
 import { Messages } from 'src/libs/utility/constants/message';
 import { ResponseData } from 'src/libs/utility/constants/response';
 import { GeneralResponse } from 'src/libs/services/generalResponse';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class HealthService {
@@ -52,5 +53,23 @@ export class HealthService {
       undefined,
       summaryOfDailyIntakes,
     );
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async updateDailyStatus() {
+    Logger.log('Updating daily health log status...');
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const formattedYesterday = yesterday.toISOString().split('T')[0];
+    await this.healthModel.update(
+      { status: true },
+      {
+        where: {
+          date: formattedYesterday,
+          status: false,
+        },
+      },
+    );
+    Logger.log('Daily health logs updated successfully.');
   }
 }

@@ -10,6 +10,7 @@ import * as dotenv from 'dotenv';
 import { UserModel } from './model/user.model';
 import { HealthModel } from './model/health.model';
 import { UserModule } from './users/users.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 dotenv.config();
 @Module({
@@ -25,6 +26,8 @@ dotenv.config();
       autoLoadModels: true,
       synchronize: true,
     }),
+
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
