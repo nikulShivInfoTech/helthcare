@@ -46,11 +46,11 @@ export class UserModel extends Model<UserModel> {
   age: number;
 
   @AllowNull(false)
-  @Column({ type: DataType.INTEGER })
+  @Column
   calories_intake: number;
 
   @AllowNull(false)
-  @Column({ type: DataType.INTEGER })
+  @Column
   notification_time: number;
 
   @AllowNull(true)

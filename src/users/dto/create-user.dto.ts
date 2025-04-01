@@ -91,5 +91,6 @@ export class CreateUserDto {
       'Notification time in hours (e.g., 12h, 24h, or any custom hour)',
   })
   @IsNotEmpty()
+  @IsNumber()
   notification_time: number;
 }

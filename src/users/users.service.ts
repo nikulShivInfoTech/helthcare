@@ -7,7 +7,6 @@ import * as bcrypt from 'bcrypt';
 import { GeneralResponse } from 'src/libs/services/generalResponse';
 import { ResponseData } from 'src/libs/utility/constants/response';
 import { Messages } from 'src/libs/utility/constants/message';
-import { UserRoles } from 'src/libs/utility/constants/enums';
 import { LoginDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -46,6 +45,7 @@ export class UsersService {
       age: createUserDto.age,
       lifestyle: createUserDto.lifestyle,
       existing_diseases: createUserDto.existing_diseases,
+      notification_time: createUserDto.notification_time,
     };
 
     const user = await this.userModel.create(payloadForCreateUser);
@@ -89,7 +89,6 @@ export class UsersService {
     const token = await this.jwtService.signAsync({
       id: userExists.dataValues.id,
       email: userExists.dataValues.email,
-      role: UserRoles.USER,
     });
 
     Logger.log(`${Messages.LOGIN_SUCCESS}`);

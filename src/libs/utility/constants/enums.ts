@@ -1,7 +1,3 @@
-export enum UserRoles {
-  USER = 'user',
-}
-
 export enum CommonDiseases {
   HEALTHY = 'Healthy',
   DIABETES = 'Diabetes',
