@@ -33,7 +33,7 @@ export class HealthModel extends Model<HealthModel> {
   @AllowNull(false)
   @Default(false)
   @Column
-  is_deleted: boolean;
+  status: boolean;
 
   @Default(Sequelize.literal('CURRENT_TIMESTAMP'))
   @Column({ type: 'TIMESTAMP' })

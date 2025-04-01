@@ -1,60 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { HealthModel } from 'src/model/health.model';
 import { CreateHealthDto } from './dto/health.dto';
-import { Op } from 'sequelize';
+import { GetHealthSummaryDto } from './dto/get-health-summary.dto';
+import { Messages } from 'src/libs/utility/constants/message';
+import { ResponseData } from 'src/libs/utility/constants/response';
+import { GeneralResponse } from 'src/libs/services/generalResponse';
 
 @Injectable()
 export class HealthService {
   constructor(
-    @InjectModel(HealthModel) private readonly healthModel: typeof HealthModel,
+    @InjectModel(HealthModel)
+    private readonly healthModel: typeof HealthModel,
   ) {}
 
-  async addHealthData(req: any, createHealthDto: CreateHealthDto) {
-    const { calories_intake, water_intake } = createHealthDto;
+  async addHealthData(req: any, dto: CreateHealthDto) {
+    const { water_intake, calories_intake, date } = dto;
     const userId = req.user.id;
-    const today = new Date().toISOString().split('T')[0];
+    const payload: any = {
+      userId,
+      water_intake,
+      calories_intake,
+      date,
+    };
+    const newData = await this.healthModel.create(payload);
 
-    const existingData = await this.healthModel.findOne({
-      where: {
-        userId,
-        date: today,
-      },
-    });
-
-    if (existingData) {
-      existingData.calories_intake += calories_intake;
-      existingData.water_intake += water_intake;
-
-      return existingData.save();
-    } else {
-      const payload: any = {
-        userId,
-        calories_intake,
-        water_intake,
-        date: today,
-      };
-      const newData = await this.healthModel.create(payload);
-
-      return newData;
-    }
+    Logger.log(`Intakes ${Messages.ADD_SUCCESS}`);
+    return GeneralResponse(
+      HttpStatus.CREATED,
+      ResponseData.SUCCESS,
+      `Intakes ${Messages.ADD_SUCCESS}`,
+      newData,
+    );
   }
 
-  async getDailySummary(userId: number, date: string) {
-    const data = await this.healthModel.findOne({
+  async getDailySummary(req: any, getHealthSummaryDto: GetHealthSummaryDto) {
+    const userId = req.user.id;
+    const summaryOfDailyIntakes = await this.healthModel.findAll({
       where: {
         userId,
-        date: date,
+        date: getHealthSummaryDto.date,
       },
     });
-
-    if (!data) {
-      throw new Error('No health data found for this date');
-    }
-
-    return {
-      totalCaloriesIntake: data.calories_intake,
-      totalWaterIntake: data.water_intake,
-    };
+    Logger.log(`Daily intakes ${Messages.RETRIEVED_SUCCESS}`);
+    return GeneralResponse(
+      HttpStatus.OK,
+      ResponseData.SUCCESS,
+      undefined,
+      summaryOfDailyIntakes,
+    );
   }
 }

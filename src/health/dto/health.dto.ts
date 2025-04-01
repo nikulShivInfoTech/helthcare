@@ -31,7 +31,7 @@
 // }
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 
 export class CreateHealthDto {
   @ApiProperty({
@@ -51,4 +51,13 @@ export class CreateHealthDto {
   @IsNumber()
   @IsPositive()
   water_intake: number;
+
+  @ApiProperty({
+    description:
+      'Date for which the health summary is created (format: YYYY-MM-DD)',
+    example: '2025-04-01',
+  })
+  @IsNotEmpty()
+  @IsString()
+  date: string;
 }
