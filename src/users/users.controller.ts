@@ -14,14 +14,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from 'src/libs/services/auth/jwt.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @HttpCode(HttpStatus.OK)
-  @Post('register')
-  async createUser(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
+  @Post('registration')
+  async userRegistration(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.userRegistration(createUserDto);
   }
 
   @HttpCode(HttpStatus.OK)

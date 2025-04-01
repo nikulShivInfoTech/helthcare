@@ -18,23 +18,10 @@ export class UsersService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto) {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-    const payloadForCreateUser: any = {
-      name: createUserDto.name,
-      email: createUserDto.email,
-      password: hashedPassword,
-      phone_number: createUserDto.phone_number,
-      gender: createUserDto.gender,
-      height: createUserDto.height,
-      weight: createUserDto.weight,
-      age: createUserDto.age,
-      lifestyle: createUserDto.lifestyle,
-      existing_diseases: createUserDto.existing_diseases,
-    };
-
+  async userRegistration(createUserDto: CreateUserDto) {
+    const { email } = createUserDto;
     const existingUser = await this.userModel.findOne({
-      where: { email: payloadForCreateUser.email },
+      where: { email },
     });
 
     if (existingUser) {
@@ -46,11 +33,26 @@ export class UsersService {
       );
     }
 
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    const payloadForCreateUser: any = {
+      name: createUserDto.name,
+      email: createUserDto.email,
+      password: hashedPassword,
+      phone_number: createUserDto.phone_number,
+      gender: createUserDto.gender,
+      calories_intake: createUserDto.calories_intake,
+      height: createUserDto.height,
+      weight: createUserDto.weight,
+      age: createUserDto.age,
+      lifestyle: createUserDto.lifestyle,
+      existing_diseases: createUserDto.existing_diseases,
+    };
+
     const user = await this.userModel.create(payloadForCreateUser);
 
     Logger.log(`${Messages.REGISTRATION_SUCCESS}`);
     return GeneralResponse(
-      HttpStatus.OK,
+      HttpStatus.CREATED,
       ResponseData.SUCCESS,
       `${Messages.REGISTRATION_SUCCESS}`,
       { id: user.dataValues.id },
@@ -118,7 +120,7 @@ export class UsersService {
 
     Logger.log(`Profile ${Messages.UPDATE_SUCCESS}`);
     return GeneralResponse(
-      HttpStatus.OK,
+      HttpStatus.ACCEPTED,
       ResponseData.SUCCESS,
       `Profile ${Messages.UPDATE_SUCCESS}`,
     );

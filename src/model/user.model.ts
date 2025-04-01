@@ -45,6 +45,14 @@ export class UserModel extends Model<UserModel> {
   @Column({ type: DataType.INTEGER })
   age: number;
 
+  @AllowNull(false)
+  @Column({ type: DataType.INTEGER })
+  calories_intake: number;
+
+  @AllowNull(false)
+  @Column({ type: DataType.INTEGER })
+  notification_time: number;
+
   @AllowNull(true)
   @Column({ type: DataType.ENUM(...Object.values(Lifestyle)) })
   lifestyle: Lifestyle;

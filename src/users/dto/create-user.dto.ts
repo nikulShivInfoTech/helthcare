@@ -47,6 +47,11 @@ export class CreateUserDto {
   @IsString()
   gender: string;
 
+  @ApiProperty({ example: 2800, description: 'Calories intake in day' })
+  @IsNotEmpty()
+  @IsNumber()
+  calories_intake: number;
+
   @ApiProperty({ example: 180, description: 'User height in cm' })
   @IsNotEmpty()
   @IsNumber()
@@ -79,4 +84,12 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(CommonDiseases)
   existing_diseases: CommonDiseases;
+
+  @ApiProperty({
+    example: 12,
+    description:
+      'Notification time in hours (e.g., 12h, 24h, or any custom hour)',
+  })
+  @IsNotEmpty()
+  notification_time: number;
 }
