@@ -7,6 +7,8 @@ import { Messages } from 'src/libs/utility/constants/message';
 import { ResponseData } from 'src/libs/utility/constants/response';
 import { GeneralResponse } from 'src/libs/services/generalResponse';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { UpdateHealthDto } from './dto/helthDataUpdate.dto';
+import { where } from 'sequelize';
 
 @Injectable()
 export class HealthService {
@@ -71,5 +73,34 @@ export class HealthService {
       },
     );
     Logger.log('Daily health logs updated successfully.');
+  }
+
+  async updateDailyIntake(id, req: any, dto: UpdateHealthDto) {
+    const { water_intake, calories_intake } = dto;
+    const userId = req.user.id;
+    const existingIntake = await this.healthModel.findOne({
+      where: { id, userId, status: false },
+    });
+
+    if (!existingIntake) {
+      Logger.error(`Intakes ${Messages.NOT_FOUND}`);
+      return GeneralResponse(
+        HttpStatus.NOT_FOUND,
+        ResponseData.ERROR,
+        `Intakes ${Messages.NOT_FOUND}`,
+      );
+    }
+
+    await existingIntake.update(
+      { water_intake, calories_intake },
+      { where: { status: false } },
+    );
+
+    Logger.log(`Intake ${Messages.UPDATE_SUCCESS}`);
+    return GeneralResponse(
+      HttpStatus.OK,
+      ResponseData.SUCCESS,
+      `Intake ${Messages.UPDATE_SUCCESS}`,
+    );
   }
 }
