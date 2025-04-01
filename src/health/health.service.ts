@@ -45,6 +45,15 @@ export class HealthService {
       },
     });
 
+    if (summaryOfDailyIntakes.length === 0) {
+      Logger.log(`Daily intakes ${Messages.NOT_FOUND}`);
+      return GeneralResponse(
+        HttpStatus.NOT_FOUND,
+        ResponseData.ERROR,
+        `Daily intakes ${Messages.NOT_FOUND}`,
+      );
+    }
+
     Logger.log(`Daily intakes ${Messages.RETRIEVED_SUCCESS}`);
     return GeneralResponse(
       HttpStatus.OK,
