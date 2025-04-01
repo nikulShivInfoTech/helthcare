@@ -65,8 +65,6 @@ export class HealthService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async updateDailyStatus() {
-    Logger.log('Updating daily health log status...');
-
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     yesterday.setHours(0, 0, 0, 0);
@@ -86,7 +84,7 @@ export class HealthService {
         },
       },
     );
-    Logger.log('Daily health logs updated successfully.');
+    Logger.log(`${Messages.SCHEDULE_MESS}`);
   }
 
   async updateDailyIntake(id, req: any, dto: UpdateHealthDto) {

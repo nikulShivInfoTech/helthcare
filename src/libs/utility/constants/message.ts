@@ -10,4 +10,5 @@ export enum Messages {
   PASS_NOT_MATCH = 'Password does not match',
   LOGIN_SUCCESS = 'You are Sign In successfully.',
   ALREADY_REGISTERED = 'You are already registered.',
+  SCHEDULE_MESS = 'Daily health status updated successfully.',
 }
