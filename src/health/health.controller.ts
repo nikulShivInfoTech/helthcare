@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { HealthService } from './health.service';
 import { CreateHealthDto } from './dto/health.dto';
-import { GetHealthSummaryDto } from './dto/get-health-summary.dto';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtGuard } from 'src/libs/services/auth/jwt.guard';
 import { UpdateHealthDto } from './dto/helthDataUpdate.dto';
@@ -33,12 +32,9 @@ export class HealthController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
-  @Post('get-intakes-details')
-  async getDailySummary(
-    @Body() getHealthSummaryDto: GetHealthSummaryDto,
-    @Req() req: any,
-  ) {
-    return await this.healthService.getDailySummary(req, getHealthSummaryDto);
+  @Get('get-intakes-details')
+  async getDailySummary(@Req() req: any) {
+    return await this.healthService.getDailySummary(req);
   }
 
   @UseGuards(JwtGuard)

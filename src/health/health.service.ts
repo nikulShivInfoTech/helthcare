@@ -2,13 +2,12 @@ import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { HealthModel } from 'src/model/health.model';
 import { CreateHealthDto } from './dto/health.dto';
-import { GetHealthSummaryDto } from './dto/get-health-summary.dto';
 import { Messages } from 'src/libs/utility/constants/message';
 import { ResponseData } from 'src/libs/utility/constants/response';
 import { GeneralResponse } from 'src/libs/services/generalResponse';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { UpdateHealthDto } from './dto/helthDataUpdate.dto';
-import { where } from 'sequelize';
+import { Op, where } from 'sequelize';
 
 @Injectable()
 export class HealthService {
@@ -18,13 +17,12 @@ export class HealthService {
   ) {}
 
   async addHealthData(req: any, dto: CreateHealthDto) {
-    const { water_intake, calories_intake, date } = dto;
+    const { water_intake, calories_intake } = dto;
     const userId = req.user.id;
     const payload: any = {
       userId,
       water_intake,
       calories_intake,
-      date,
     };
     const newData = await this.healthModel.create(payload);
 
@@ -37,13 +35,12 @@ export class HealthService {
     );
   }
 
-  async getDailySummary(req: any, getHealthSummaryDto: GetHealthSummaryDto) {
+  async getDailySummary(req: any) {
     const userId = req.user.id;
 
     const summaryOfDailyIntakes = await this.healthModel.findAll({
       where: {
         userId,
-        date: getHealthSummaryDto.date,
         status: false,
       },
     });
@@ -60,14 +57,22 @@ export class HealthService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async updateDailyStatus() {
     Logger.log('Updating daily health log status...');
+
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const formattedYesterday = yesterday.toISOString().split('T')[0];
+    yesterday.setHours(0, 0, 0, 0);
+
+    const endOfYesterday = new Date();
+    endOfYesterday.setDate(endOfYesterday.getDate() - 1);
+    endOfYesterday.setHours(23, 59, 59, 999);
+
     await this.healthModel.update(
       { status: true },
       {
         where: {
-          date: formattedYesterday,
+          createdAt: {
+            [Op.between]: [yesterday, endOfYesterday],
+          },
           status: false,
         },
       },

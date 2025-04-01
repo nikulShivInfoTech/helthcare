@@ -27,10 +27,6 @@ export class HealthModel extends Model<HealthModel> {
   water_intake: number;
 
   @AllowNull(false)
-  @Column({ type: DataType.DATEONLY })
-  date: string;
-
-  @AllowNull(false)
   @Default(false)
   @Column
   status: boolean;
