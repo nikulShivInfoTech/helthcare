@@ -16,15 +16,9 @@ export class HealthService {
     private readonly healthModel: typeof HealthModel,
   ) {}
 
-  async addHealthData(req: any, dto: CreateHealthDto) {
-    const { water_intake, calories_intake } = dto;
+  async addHealthData(req: any, dto: any) {
     const userId = req.user.id;
-    const payload: any = {
-      userId,
-      water_intake,
-      calories_intake,
-    };
-    const newData = await this.healthModel.create(payload);
+    const newData = await this.healthModel.create({ userId, ...dto });
 
     Logger.log(`Intakes ${Messages.ADD_SUCCESS}`);
     return GeneralResponse(
@@ -65,31 +59,27 @@ export class HealthService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async updateDailyStatus() {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    yesterday.setHours(0, 0, 0, 0);
-
-    const endOfYesterday = new Date();
-    endOfYesterday.setDate(endOfYesterday.getDate() - 1);
-    endOfYesterday.setHours(23, 59, 59, 999);
-
-    await this.healthModel.update(
-      { status: true },
-      {
-        where: {
-          createdAt: {
-            [Op.between]: [yesterday, endOfYesterday],
+    const findIntakes = await this.healthModel.findAll({
+      where: { status: false },
+    });
+    if (findIntakes.length !== 0) {
+      for (let item of findIntakes) {
+        await this.healthModel.update(
+          { status: true },
+          {
+            where: {
+              status: false,
+            },
           },
-          status: false,
-        },
-      },
-    );
-    Logger.log(`${Messages.SCHEDULE_MESS}`);
+        );
+        Logger.log(`${Messages.SCHEDULE_MESS}`);
+      }
+    }
   }
 
-  async updateDailyIntake(id, req: any, dto: UpdateHealthDto) {
-    const { water_intake, calories_intake } = dto;
+  async updateDailyIntake(id, req: any, dto: any) {
     const userId = req.user.id;
+
     const existingIntake = await this.healthModel.findOne({
       where: { id, userId, status: false },
     });
@@ -103,10 +93,7 @@ export class HealthService {
       );
     }
 
-    await existingIntake.update(
-      { water_intake, calories_intake },
-      { where: { status: false } },
-    );
+    await existingIntake.update({ ...dto }, { where: { status: false } });
 
     Logger.log(`Intake ${Messages.UPDATE_SUCCESS}`);
     return GeneralResponse(
