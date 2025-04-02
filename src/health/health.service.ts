@@ -14,8 +14,8 @@ export class HealthService {
   ) {}
 
   async addHealthData(req: any, dto: any) {
-    const userId = req.user.id;
-    const newData = await this.healthModel.create({ userId, ...dto });
+    const user_id = req.user.id;
+    const newData = await this.healthModel.create({ user_id, ...dto });
 
     Logger.log(`Intakes ${Messages.ADD_SUCCESS}`);
     return GeneralResponse(
@@ -27,11 +27,11 @@ export class HealthService {
   }
 
   async getDailySummary(req: any) {
-    const userId = req.user.id;
+    const user_id = req.user.id;
 
     const summaryOfDailyIntakes = await this.healthModel.findAll({
       where: {
-        userId,
+        user_id,
         status: false,
       },
     });
@@ -75,10 +75,10 @@ export class HealthService {
   }
 
   async updateDailyIntake(id, req: any, dto: any) {
-    const userId = req.user.id;
+    const user_id = req.user.id;
 
     const existingIntake = await this.healthModel.findOne({
-      where: { id, userId, status: false },
+      where: { id, user_id, status: false },
     });
 
     if (!existingIntake) {

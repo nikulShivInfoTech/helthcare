@@ -16,7 +16,7 @@ export class HealthModel extends Model<HealthModel> {
   @AllowNull(false)
   @ForeignKey(() => UserModel)
   @Column
-  userId: number;
+  user_id: number;
 
   @AllowNull(false)
   @Column({ type: DataType.INTEGER })
@@ -44,6 +44,6 @@ export class HealthModel extends Model<HealthModel> {
   })
   declare updatedAt: Date;
 
-  @BelongsTo(() => UserModel, 'userId')
+  @BelongsTo(() => UserModel, 'user_id')
   user: UserModel;
 }
