@@ -44,15 +44,11 @@ export class GraphReportService {
       totalWaterIntakeLiters,
       waterGoalLiters: waterGoal,
       progress: `${progress}%`,
-      logs: healthLogs.map((log) => ({
-        time: log.createdAt.toISOString(),
-        intakeML: log.dataValues.water_intake,
-      })),
     };
 
     Logger.log(`Graph ${Messages.RETRIEVED_SUCCESS}`);
     return GeneralResponse(
-      HttpStatus.CREATED,
+      HttpStatus.OK,
       ResponseData.SUCCESS,
       undefined,
       response,
@@ -111,13 +107,11 @@ export class GraphReportService {
     });
 
     return {
-      user: {
-        name: user.dataValues?.name,
-        age: user.dataValues?.age,
-      },
-      startDate,
-      endDate,
-      ...paginationResult,
+      report: paginationResult.report,
+      totalPage: paginationResult.totalPage,
+      currentPage: paginationResult.currentPage,
+      pageSize: paginationResult.pageSize,
+      numberOfRows: paginationResult.numberOfRows,
     };
   }
 }
