@@ -59,9 +59,9 @@ export class GraphReportService {
     );
   }
 
-  async getHealthReport(dto: ReportDto) {
-    const { user_id, startDate, endDate, page, pageSize, sortKey, sortValue } =
-      dto;
+  async getHealthReport(dto: ReportDto, req: any) {
+    const user_id = req.user.id;
+    const { startDate, endDate, page, pageSize, sortKey, sortValue } = dto;
 
     const user: any = await UserModel.findByPk(user_id);
     const dailyWaterGoal = user.dataValues?.water_intake || 0;

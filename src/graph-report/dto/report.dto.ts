@@ -2,11 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ReportDto {
-  @ApiProperty({ example: 1, description: 'User ID', required: true })
-  @IsNotEmpty()
-  @IsNumber()
-  user_id: number;
-
   @ApiProperty({
     example: '2025-04-01',
     description: 'Start Date (YYYY-MM-DD)',

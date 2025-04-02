@@ -29,7 +29,7 @@ export class GraphReportController {
   @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @Post('report')
-  async getHealthReport(@Body() dto: ReportDto) {
-    return this.graphReportService.getHealthReport(dto);
+  async getHealthReport(@Body() dto: ReportDto, @Req() req: any) {
+    return this.graphReportService.getHealthReport(dto, req);
   }
 }
