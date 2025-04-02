@@ -11,6 +11,7 @@ import { UserModel } from './model/user.model';
 import { HealthModel } from './model/health.model';
 import { UserModule } from './users/users.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { GraphReportModule } from './graph-report/graph-report.module';
 
 dotenv.config();
 @Module({
@@ -35,6 +36,7 @@ dotenv.config();
 
     HealthModule,
     UserModule,
+    GraphReportModule,
   ],
 
   controllers: [AppController],
