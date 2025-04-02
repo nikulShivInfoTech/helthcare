@@ -1,13 +1,10 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { HealthModel } from 'src/model/health.model';
-import { CreateHealthDto } from './dto/health.dto';
 import { Messages } from 'src/libs/utility/constants/message';
 import { ResponseData } from 'src/libs/utility/constants/response';
 import { GeneralResponse } from 'src/libs/services/generalResponse';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { UpdateHealthDto } from './dto/helthDataUpdate.dto';
-import { Op, where } from 'sequelize';
 
 @Injectable()
 export class HealthService {
