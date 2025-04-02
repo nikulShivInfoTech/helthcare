@@ -46,7 +46,7 @@ export class UsersService {
       lifestyle: createUserDto.lifestyle,
       existing_diseases: createUserDto.existing_diseases,
       notification_time: createUserDto.notification_time,
-      water_intake:createUserDto.water_intake
+      water_intake: createUserDto.water_intake,
     };
 
     const user = await this.userModel.create(payloadForCreateUser);
@@ -123,6 +123,45 @@ export class UsersService {
       HttpStatus.ACCEPTED,
       ResponseData.SUCCESS,
       `Profile ${Messages.UPDATE_SUCCESS}`,
+    );
+  }
+
+  async userProfile(req: any) {
+    const id = req.user.id;
+    const userDetails = await this.userModel.findOne({
+      where: { id },
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'phone_number',
+        'gender',
+        'height',
+        'weight',
+        'age',
+        'calories_intake',
+        'notification_time',
+        'water_intake',
+        'lifestyle',
+        'existing_diseases',
+      ],
+    });
+
+    if (!userDetails) {
+      Logger.error(`User ${Messages.NOT_FOUND}`);
+      return GeneralResponse(
+        HttpStatus.NOT_FOUND,
+        ResponseData.ERROR,
+        `User ${Messages.NOT_FOUND}`,
+      );
+    }
+
+    Logger.error(`User ${Messages.RETRIEVED_SUCCESS}`);
+    return GeneralResponse(
+      HttpStatus.OK,
+      ResponseData.SUCCESS,
+      undefined,
+      userDetails.dataValues,
     );
   }
 }
