@@ -22,15 +22,6 @@ export class HealthTipsService {
       where: { id },
     });
 
-    if (!findUserDetails) {
-      Logger.error(`User ${Messages.NOT_FOUND}`);
-      return GeneralResponse(
-        HttpStatus.NOT_FOUND,
-        ResponseData.ERROR,
-        `User ${Messages.NOT_FOUND}`,
-      );
-    }
-
     const findCure = await this.diseasesModel.findOne({
       where: { name: findUserDetails.dataValues.existing_diseases },
       attributes: ['name'],
