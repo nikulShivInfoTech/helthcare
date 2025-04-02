@@ -10,6 +10,9 @@ import * as dotenv from 'dotenv';
 import { UserModel } from './model/user.model';
 import { HealthModel } from './model/health.model';
 import { UserModule } from './users/users.module';
+import { DiseasesModel } from './model/disease.model';
+import { CureSuggestionsModel } from './model/cureTips.model';
+import { HealthTipsModule } from './health-tips/health-tips.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphReportModule } from './graph-report/graph-report.module';
 
@@ -23,7 +26,7 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      models: [UserModel, HealthModel],
+      models: [UserModel, DiseasesModel, CureSuggestionsModel, HealthModel],
       autoLoadModels: true,
       synchronize: true,
     }),
@@ -37,6 +40,7 @@ dotenv.config();
     HealthModule,
     UserModule,
     GraphReportModule,
+    HealthTipsModule,
   ],
 
   controllers: [AppController],
