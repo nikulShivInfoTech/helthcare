@@ -7,7 +7,9 @@ import {
   AllowNull,
   Sequelize,
   DataType,
+  HasMany,
 } from 'sequelize-typescript';
+import { HealthModel } from './health.model';
 import { CommonDiseases, Lifestyle } from 'src/libs/utility/constants/enums';
 
 @Table({ tableName: 'users' })
@@ -82,4 +84,7 @@ export class UserModel extends Model<UserModel> {
     ),
   })
   declare updatedAt: Date;
+
+  @HasMany(() => HealthModel)
+  healthData: HealthModel[];
 }
