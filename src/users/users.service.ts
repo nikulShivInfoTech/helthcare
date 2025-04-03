@@ -47,6 +47,7 @@ export class UsersService {
       existing_diseases: createUserDto.existing_diseases,
       notification_time: createUserDto.notification_time,
       water_intake: createUserDto.water_intake,
+      device_token: createUserDto.device_token,
     };
 
     const user = await this.userModel.create(payloadForCreateUser);

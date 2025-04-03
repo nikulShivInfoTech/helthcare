@@ -101,4 +101,12 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsNumber()
   water_intake: number;
+
+  @ApiProperty({
+    example: 'device fmc token',
+    description: '',
+  })
+  @IsNotEmpty()
+  @IsString()
+  device_token: string;
 }
