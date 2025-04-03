@@ -14,6 +14,7 @@ import { DiseasesModel } from './model/disease.model';
 import { CureSuggestionsModel } from './model/cureTips.model';
 import { HealthTipsModule } from './health-tips/health-tips.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { NotificationModule } from './notification/notification.module';
 
 dotenv.config();
 @Module({
@@ -39,6 +40,7 @@ dotenv.config();
     HealthModule,
     UserModule,
     HealthTipsModule,
+    NotificationModule,
   ],
 
   controllers: [AppController],
