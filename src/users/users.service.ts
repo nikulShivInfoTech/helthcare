@@ -126,4 +126,43 @@ export class UsersService {
       `Profile ${Messages.UPDATE_SUCCESS}`,
     );
   }
+
+  async userProfile(req: any) {
+    const id = req.user.id;
+    const userDetails = await this.userModel.findOne({
+      where: { id },
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'phone_number',
+        'gender',
+        'height',
+        'weight',
+        'age',
+        'calories_intake',
+        'notification_time',
+        'water_intake',
+        'lifestyle',
+        'existing_diseases',
+      ],
+    });
+
+    if (!userDetails) {
+      Logger.error(`User ${Messages.NOT_FOUND}`);
+      return GeneralResponse(
+        HttpStatus.NOT_FOUND,
+        ResponseData.ERROR,
+        `User ${Messages.NOT_FOUND}`,
+      );
+    }
+
+    Logger.error(`User ${Messages.RETRIEVED_SUCCESS}`);
+    return GeneralResponse(
+      HttpStatus.OK,
+      ResponseData.SUCCESS,
+      undefined,
+      userDetails.dataValues,
+    );
+  }
 }

@@ -6,6 +6,7 @@ import {
   HttpCode,
   Req,
   UseGuards,
+  Get,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -36,5 +37,13 @@ export class UsersController {
   @Post('update-user')
   async updateUser(@Body() updateUserDto: UpdateUserDto, @Req() req: any) {
     return await this.usersService.updateUser(updateUserDto, req);
+  }
+
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @Get('user-profile')
+  async userProfile(@Req() req: any) {
+    return await this.usersService.userProfile(req);
   }
 }
