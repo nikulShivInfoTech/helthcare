@@ -14,6 +14,7 @@ import { DiseasesModel } from './model/disease.model';
 import { CureSuggestionsModel } from './model/cureTips.model';
 import { HealthTipsModule } from './health-tips/health-tips.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { GraphReportModule } from './graph-report/graph-report.module';
 
 dotenv.config();
 @Module({
@@ -38,6 +39,7 @@ dotenv.config();
 
     HealthModule,
     UserModule,
+    GraphReportModule,
     HealthTipsModule,
   ],
 
