@@ -49,4 +49,25 @@ export class NotificationService {
       }
     }
   }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async sendWaterIntakeReminders() {
+    const currentHour = new Date().getHours();
+    const users = await UserModel.findAll({
+      where: {
+        notification_time: currentHour,
+      },
+    });
+    for (const user of users) {
+      const token = user.dataValues.device_token;
+      if (token) {
+        const notificationPayload = {
+          token,
+          title: 'Hydration Reminder',
+          body: "It's time to drink water! Stay hydrated 💧",
+        };
+        this.sendPushNotification(notificationPayload);
+      }
+    }
+  }
 }
