@@ -58,6 +58,7 @@ export class NotificationService {
         notification_time: currentHour,
       },
     });
+
     for (const user of users) {
       const token = user.dataValues.device_token;
       if (token) {

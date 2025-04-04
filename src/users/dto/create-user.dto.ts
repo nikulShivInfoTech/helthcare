@@ -8,7 +8,11 @@ import {
   IsOptional,
   IsEnum,
 } from 'class-validator';
-import { CommonDiseases, Lifestyle } from 'src/libs/utility/constants/enums';
+import {
+  CommonDiseases,
+  Lifestyle,
+  TimeRangesForNotification,
+} from 'src/libs/utility/constants/enums';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'John Doe', description: 'Full name of the user' })
@@ -86,13 +90,13 @@ export class CreateUserDto {
   existing_diseases: CommonDiseases;
 
   @ApiProperty({
-    example: 12,
-    description:
-      'Notification time in hours (e.g., 12h, 24h, or any custom hour)',
+    example: TimeRangesForNotification.H12,
+    description: 'notification time',
+    enum: TimeRangesForNotification,
   })
   @IsNotEmpty()
-  @IsNumber()
-  notification_time: number;
+  @IsEnum(TimeRangesForNotification)
+  notification_time: TimeRangesForNotification;
 
   @ApiProperty({
     example: 3,
