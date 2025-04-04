@@ -10,7 +10,11 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { HealthModel } from './health.model';
-import { CommonDiseases, Lifestyle } from 'src/libs/utility/constants/enums';
+import {
+  CommonDiseases,
+  Lifestyle,
+  TimeRangesForNotification,
+} from 'src/libs/utility/constants/enums';
 
 @Table({ tableName: 'users' })
 export class UserModel extends Model<UserModel> {
@@ -52,8 +56,8 @@ export class UserModel extends Model<UserModel> {
   calories_intake: number;
 
   @AllowNull(false)
-  @Column
-  notification_time: number;
+  @Column({ type: DataType.ENUM(...Object.values(TimeRangesForNotification)) })
+  notification_time: TimeRangesForNotification;
 
   @AllowNull(false)
   @Column
